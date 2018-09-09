@@ -7,12 +7,16 @@ import Contact from './components/Contact';
 
 class App extends Component {
 
-    state = { apiResponse: "" };
+state= {
+  arr: [{
+    name: 'loading'
+  }]
+}
 
 callAPI() {
     fetch("http://localhost:3001/")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
+        .then(res => res.json())
+        .then(res => this.setState({ arr: res }));
 }
 componentWillMount() {
     this.callAPI();
@@ -26,7 +30,7 @@ componentWillMount() {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/contact' component={Contact} />
-              <p>{this.state.apiResponse}</p>
+              <p>{this.state.arr[0].name}</p>
           </div>
       </BrowserRouter>
     );
