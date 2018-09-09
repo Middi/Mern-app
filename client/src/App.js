@@ -7,6 +7,17 @@ import Contact from './components/Contact';
 
 class App extends Component {
 
+    state = { apiResponse: "" };
+
+callAPI() {
+    fetch("http://localhost:3001/")
+        .then(res => res.text())
+        .then(res => this.setState({ apiResponse: res }));
+}
+componentWillMount() {
+    this.callAPI();
+}
+
   render() {
     return (
       <BrowserRouter>
@@ -15,7 +26,7 @@ class App extends Component {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/contact' component={Contact} />
-      
+              <p>{this.state.apiResponse}</p>
           </div>
       </BrowserRouter>
     );
