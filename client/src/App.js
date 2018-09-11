@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import './App.css';
 import Navbar from './components/Navbar';
 import {BrowserRouter, Route} from 'react-router-dom';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -26,7 +29,6 @@ componentWillMount() {
 }
 
 
-
   render() {
     const items = this.state.arr.map(item => (
       <p stuff={item} key={item.id}>{item.name}</p>
@@ -38,6 +40,8 @@ componentWillMount() {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/contact' component={Contact} />
+              <Route path='/login' component={Login} />
+              <Route path='/register' component={Register} />
               {!this.state.loading ? items : ''}
           </div>
       </BrowserRouter>
