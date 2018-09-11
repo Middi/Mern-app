@@ -1,22 +1,55 @@
 var express = require('express');
 var router = express.Router();
+const bcrypt = require('bcryptjs');
 
 // Item Model
-const Item = require('../models/user');
+const User = require('../models/user');
 
-router.get('/', (req, res) => {
-    Item.find()
-        .sort({ date: 1 })
-        .then(items => res.json(items))
+
+
+router.get('/register', (req, res) => {
+  User.find()
+      .then(users => res.json(users))
 });
 
 
-router.post('/', (req, res) => {
-  const newItem = new Item({
-      name: req.body.name,
-      password: req.body.date
+
+// Register Proccess
+router.post('/register', function (req, res) {
+  const first_name = req.body.first_name;
+  const last_name = req.body.last_name;
+  const email = req.body.email;
+  const username = req.body.username;
+  const password = req.body.password;
+
+
+  let newUser = new User({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      username: username,
+      password: password
   });
-  newItem.save().then(item => res.json(item));
+
+  bcrypt.genSalt(10, function (err, salt) {
+      bcrypt.hash(newUser.password, salt, function (err, hash) {
+          if (err) {
+              console.log(err);
+          }
+          newUser.password = hash;
+          newUser.save(function (err) {
+              if (err) {
+                  console.log(err);
+                  return;
+              }
+              else {
+                  res.redirect('/users/register');
+              }
+          });
+      });
+  });
+
 });
+
 
 module.exports = router;

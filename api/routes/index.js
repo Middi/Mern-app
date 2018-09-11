@@ -12,12 +12,12 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
-  const newUser = new User({
+  const newItem = new Item({
       name: req.body.name,
       date: req.body.date,
       id: req.body.id
   });
-  newUser.save().then(user => res.json(user));
+  newItem.save().then(item => res.json(item));
 });
 
 module.exports = router;
