@@ -8,21 +8,29 @@ import Contact from './components/Contact';
 class App extends Component {
 
 state= {
-  arr: [{
-    name: 'loading'
-  }]
+  loading: true,
+  arr: []
 }
 
 callAPI() {
     fetch("http://localhost:3001/")
         .then(res => res.json())
-        .then(res => this.setState({ arr: res }));
+        .then(res => this.setState({
+          arr: res,
+          loading: false
+        }));
 }
+
 componentWillMount() {
     this.callAPI();
 }
 
+
+
   render() {
+    const items = this.state.arr.map(item => (
+      <p stuff={item} key={item.id}>{item.name}</p>
+    ));
     return (
       <BrowserRouter>
           <div className="App">
@@ -30,7 +38,7 @@ componentWillMount() {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/contact' component={Contact} />
-              <p>{this.state.arr[0].name}</p>
+              {!this.state.loading ? items : ''}
           </div>
       </BrowserRouter>
     );
