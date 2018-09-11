@@ -48,6 +48,7 @@ export default class Register extends Component {
             }
           }).then(res => res.json())
           .then(res => console.log('Success:', res))
+          .then(this.props.history.push('/'))
           .catch(error => console.error('Error:', error));
     }
 
