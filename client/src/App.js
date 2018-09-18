@@ -8,20 +8,33 @@ import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
 
+import axios from 'axios';
+
 class App extends Component {
 
 state= {
   loading: true,
-  arr: []
+  arr: [],
 }
 
 callAPI() {
-    fetch("http://localhost:3001/")
-        .then(res => res.json())
-        .then(res => this.setState({
-          arr: res,
-          loading: false
-        }));
+  axios.get('http://localhost:3001/')
+        .then(res => {
+            console.log(res)
+            if(res.data) {
+                console.log('successful');
+                this.setState({
+                  arr: res.data,
+                  loading: false
+                });
+            }
+            else {
+                console.log('Sign Up Error');
+            }
+        })
+        .catch(err => {
+            console.log('Sign up server error: ', err);
+        })
 }
 
 componentWillMount() {

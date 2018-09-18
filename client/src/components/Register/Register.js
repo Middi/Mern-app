@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import '../Login/Login.css';
+import axios from 'axios';
 
 export default class Register extends Component {
 	state = {
@@ -7,7 +8,8 @@ export default class Register extends Component {
         last_name: '',
 		username: '',
         password: '',
-        email: ''
+		email: '',
+		redirectTo: {}
 	};
 
 	handleChange = (e) => {
@@ -20,7 +22,7 @@ export default class Register extends Component {
     }
     
 
-    clickSubmit = e => {
+    handleSubmit = e => {
         e.preventDefault();
         
         const NS = {
@@ -31,25 +33,23 @@ export default class Register extends Component {
             password: this.state.password
         }
 
-        this.addItem(NS);
-        const newState = { ...this.state };
-        newState.event = {};
-        this.setState(newState);
-    }
-
-    addItem(data) {
-        const url = "http://localhost:3001/users/register";
-        
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(data), // data can be `string` or {object}!
-            headers:{
-              'Content-Type': 'application/json'
-            }
-          }).then(res => res.json())
-          .then(res => console.log('Success:', res))
-          .then(this.props.history.push('/'))
-          .catch(error => console.error('Error:', error));
+        axios.post('http://localhost:3001/users/register', NS)
+            .then(res => {
+				console.log('==================')
+                console.log(res)
+                if(res.data) {
+                    console.log('successful signup');
+                    this.setState({
+                        redirectTo: res
+                    });
+                }
+                else {
+                    console.log('Sign Up Error');
+                }
+            })
+            .catch(err => {
+                console.log('Sign up server error: ', err);
+            })
     }
 
 
@@ -121,7 +121,7 @@ export default class Register extends Component {
 								<label htmlFor="password">Password</label>
 							</div>
 						</div>
-						<button className="btn waves-effect waves-light" onClick={(e) => this.clickSubmit(e)}>Submit</button>
+						<button className="btn waves-effect waves-light" onClick={(e) => this.handleSubmit(e)}>Submit</button>
 					</form>
 				</div>
 		);

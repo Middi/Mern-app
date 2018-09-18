@@ -7,9 +7,25 @@ const User = require('../models/user');
 
 
 
+router.get('/login', (req, res) => {
+  
+});
+
+
+router.get('/logout', (req, res) => {
+  // handle with passport
+  res.send('logging out')
+});
+
+router.get('/google', (req, res) => {
+  // handle with passport
+  res.send('logging in with google')
+});
+
+
+
 router.get('/register', (req, res) => {
-  User.find()
-      .then(users => res.json(users))
+    console.log(req.headers)
 });
 
 
@@ -43,7 +59,7 @@ router.post('/register', function (req, res) {
                   return;
               }
               else {
-                  res.redirect('/users/register');
+                  res.redirect('http://localhost:3000');
               }
           });
       });
